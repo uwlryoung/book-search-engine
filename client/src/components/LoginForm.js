@@ -1,3 +1,5 @@
+// TODO: Replace the loginUser() functionality imported from the API file with the LOGIN_USER mutation functionality. 
+
 // see SignupForm.js for comments
 import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';

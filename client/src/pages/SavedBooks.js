@@ -1,3 +1,7 @@
+// TODO: Remove the useEffect() Hook that sets the state for UserData.
+// Instead, use the userQuery() Hook to execute the GET_ME query on load and save it to a variable named userData. 
+// User the userMutation() Hook to execute the REMOVE_BOOK mutation in the handleDeleteBook() function that's imported from API file. (Make sure you keep the removeBookId() function in place!)
+
 import React, { useState, useEffect } from 'react';
 import {
   Container,
