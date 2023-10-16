@@ -40,18 +40,28 @@ const resolvers = {
 
       return { token, user };
     },
-    saveBook: async (parent, { _id, bookSchema }) => {
-      const updatedUser = await User.findOneAndUpdate(
-        { _id: _id },
-        { $addToSet: { savedBooks: bookSchema } },
-        { new: true, runValidators: true } 
-      );
-
-      if (!updatedUser) {
-        throw new AuthenticationError("Couldn't find user with this id!");
+    saveBook: async (parent, { input }, context) => {
+      if (context.user) {
+        console.log(input);
+        return User.findOneAndUpdate(
+          {$or: [{_id: context.user._id}, {username: context.user.username }]},
+          { $addToSet: {savedBooks: input } },
+          { new: true, runValidators: true }
+        )
+      } else {
+        throw new AuthenticationError("Couldn't fine user with this id!")
       }
+      // const updatedUser = await User.findOneAndUpdate(
+      //   { _id: _id },
+      //   { $addToSet: { savedBooks: bookSchema } },
+      //   { new: true, runValidators: true } 
+      // );
 
-      return { updatedUser }
+      // if (!updatedUser) {
+      //   throw new AuthenticationError("Couldn't find user with this id!");
+      // }
+
+      // return { updatedUser }
     },
     removeBook: async (parent, {_id, bookSchema}) => {
       const updatedUser = await User.findOneAndUpdate(
