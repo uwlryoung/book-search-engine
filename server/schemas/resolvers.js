@@ -1,5 +1,5 @@
 // TODO: Define the query and mutation functionality to work with the Mongoose models ✅
-//* Hint: use the functionality in the user-controller.js as a guide 
+//* Hint: use the functionality in the user-controller.js as a guide
 
 const { AuthenticationError } = require("apollo-server-express");
 const { User } = require("../models");
@@ -11,15 +11,15 @@ const resolvers = {
     me: async (parent, args, context) => {
       if (context.user) {
         return User.findOne({
-          $or: [{_id: context.user._id}, {username: context.user.username }]
-        })
+          $or: [{ _id: context.user._id }, { username: context.user.username }],
+        });
       }
     },
   },
 
   Mutation: {
     addUser: async (parent, { username, email, password }) => {
-      const user = await User.create({username, email, password});
+      const user = await User.create({ username, email, password });
       const token = signToken(user);
       return { token, user };
     },
@@ -42,40 +42,42 @@ const resolvers = {
     },
     saveBook: async (parent, { input }, context) => {
       if (context.user) {
-        console.log(input);
         return User.findOneAndUpdate(
-          {$or: [{_id: context.user._id}, {username: context.user.username }]},
-          { $addToSet: {savedBooks: input } },
+          {
+            $or: [
+              { _id: context.user._id },
+              { username: context.user.username },
+            ],
+          },
+          { $addToSet: { savedBooks: input } },
           { new: true, runValidators: true }
-        )
+        );
       } else {
-        throw new AuthenticationError("Couldn't fine user with this id!")
+        throw new AuthenticationError("Couldn't fine user with this id!");
       }
-      // const updatedUser = await User.findOneAndUpdate(
-      //   { _id: _id },
-      //   { $addToSet: { savedBooks: bookSchema } },
-      //   { new: true, runValidators: true } 
-      // );
+    },
+    removeBook: async (parent, { bookId }, context) => {
+      if (context.user) {
+        return User.findOneAndUpdate(
+          {
+            $or: [
+              { _id: context.user._id },
+              { username: context.user.username },
+            ],
+          },
+          { $pull: { savedBooks: {bookId: bookId} } },
+          { new: true, runValidators: true }
+        );
+      } else {
+        throw new AuthenticationError("Couldn't find user with this id!");
+      }
 
       // if (!updatedUser) {
       //   throw new AuthenticationError("Couldn't find user with this id!");
       // }
 
-      // return { updatedUser }
+      // return { updatedUser };
     },
-    removeBook: async (parent, {_id, bookSchema}) => {
-      const updatedUser = await User.findOneAndUpdate(
-        { _id: _id },
-        { $pull: { savedBooks: bookSchema } },
-        { new: true, runValidators: true } 
-      );
-
-      if (!updatedUser) {
-        throw new AuthenticationError("Couldn't find user with this id!");
-      }
-
-      return { updatedUser }
-    }
   },
 };
 
