@@ -8,7 +8,7 @@ const { authMiddleware, signToken } = require("../utils/auth");
 
 const resolvers = {
   Query: {
-    user: async (parent, { _id, username }) => {
+    me: async (parent, { _id, username }) => {
       return User.findOne({
         $or: [{ _id }, { username }],
       });
@@ -16,8 +16,8 @@ const resolvers = {
   },
 
   Mutation: {
-    createUser: async (parent, { username, email, password }) => {
-      const user = await User.create({ username, email, password });
+    addUser: async (parent, { username, email, password }) => {
+      const user = await User.create({username, email, password});
       const token = signToken(user);
       return { token, user };
     },
@@ -51,7 +51,7 @@ const resolvers = {
 
       return { updatedUser }
     },
-    deleteBook: async (parent, {_id, bookSchema}) => {
+    removeBook: async (parent, {_id, bookSchema}) => {
       const updatedUser = await User.findOneAndUpdate(
         { _id: _id },
         { $pull: { savedBooks: bookSchema } },
