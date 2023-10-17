@@ -4,7 +4,6 @@
 const { AuthenticationError } = require("apollo-server-express");
 const { User } = require("../models");
 const { authMiddleware, signToken } = require("../utils/auth");
-// I may not need the authMiddleware to be imported here.
 
 const resolvers = {
   Query: {
@@ -71,12 +70,6 @@ const resolvers = {
       } else {
         throw new AuthenticationError("Couldn't find user with this id!");
       }
-
-      // if (!updatedUser) {
-      //   throw new AuthenticationError("Couldn't find user with this id!");
-      // }
-
-      // return { updatedUser };
     },
   },
 };

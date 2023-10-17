@@ -45,9 +45,3 @@ const typeDefs = gql`
 `;
 
 module.exports = typeDefs;
-
-// Maybe add later to the above
-// input UserInput {
-//   username: String!
-//   email: String!
-// }
