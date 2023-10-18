@@ -80,7 +80,7 @@ const SearchBooks = () => {
 
       Auth.login(data.login.token);
 
-      return setSavedBookIds([...savedBookIds, bookToSave.bookId]);
+      setSavedBookIds([...savedBookIds, bookToSave.bookId]);
     } catch (e) {
       console.error(e);
     }
