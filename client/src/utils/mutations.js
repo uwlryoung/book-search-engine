@@ -30,17 +30,24 @@ export const ADD_USER = gql`
   }
 `;
 
+
 export const SAVE_BOOK = gql`
-  mutation saveBook($bookId: String!, $authors: [String!]!, $description: String!, $title: String, $image: String, $link: String){
-    saveBook(bookId: $bookId, authors: $authors, description: $description, title: $title, image: $image, link: $link){
-      _id
-      username
-      email
-      bookCount
-      savedBooks
-    }
+  mutation saveBook($input: input){
+    saveBook(input: $input)
   }
-`;
+`
+
+// export const SAVE_BOOK = gql`
+//   mutation saveBook($bookId: String!, $authors: [String!]!, $description: String!, $title: String, $image: String, $link: String){
+//     saveBook(bookId: $bookId, authors: $authors, description: $description, title: $title, image: $image, link: $link){
+//       _id
+//       username
+//       email
+//       bookCount
+//       savedBooks
+//     }
+//   }
+// `;
   //! Or does the SAVE_BOOK need to have below intead? Since it returns a user, I believe it needs to be user fields
   // bookId
   // authors
