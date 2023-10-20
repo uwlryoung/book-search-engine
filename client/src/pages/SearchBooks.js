@@ -1,6 +1,3 @@
-// TODO: Use the Apollo useMutation() Hook to execute the SAVE_BOOK mutation in the handleSaveBook() function instead of the saveBook() function imported from the API file
-// * Make sure you keep the logic for saving the book's ID to state in the try...catch block!
-
 import React, { useState, useEffect } from "react";
 import { Container, Col, Form, Button, Card, Row } from "react-bootstrap";
 
@@ -15,12 +12,11 @@ const SearchBooks = () => {
   const [searchedBooks, setSearchedBooks] = useState([]);
   // create state for holding our search field data
   const [searchInput, setSearchInput] = useState("");
-
   // create state to hold saved bookId values
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
 
   // create the useMutation to save the book
-  const [saveBook, { data, error }] = useMutation(SAVE_BOOK);
+  const [saveBook] = useMutation(SAVE_BOOK);
 
   // set up useEffect hook to save `savedBookIds` list to localStorage on component unmount
   // learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup
@@ -60,9 +56,6 @@ const SearchBooks = () => {
     }
   };
 
-  // TODO: Use the Apollo useMutation() Hook to execute the SAVE_BOOK mutation in the handleSaveBook() function instead of the saveBook() function imported from the API file
-  // * Make sure you keep the logic for saving the book's ID to state in the try...catch block!
-
   const handleSaveBook = async (bookId) => {
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
 
@@ -74,7 +67,7 @@ const SearchBooks = () => {
     try {
       const { data } = await saveBook({
         variables: {
-          bookData: { ...bookToSave }
+          bookData: { ...bookToSave },
         },
       });
 
@@ -86,52 +79,6 @@ const SearchBooks = () => {
       console.error(e);
     }
   };
-
-  // Below is from saveBook in the utils/API.js file
-  // export const saveBook = (bookData, token) => {
-  //   return fetch('/api/users', {
-  //     method: 'PUT',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       authorization: `Bearer ${token}`,
-  //     },
-  //     body: JSON.stringify(bookData),
-  //   });
-  // };
-
-  // create function to handle saving a book to our database
-  // const handleSaveBook = async (bookId) => {
-  //   // find the book in `searchedBooks` state by the matching id
-  // const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
-
-  //   // get token
-  //   const token = Auth.loggedIn() ? Auth.getToken() : null;
-
-  //   if (!token) {
-  //     return false;
-  //   }
-
-  //   try {
-  //     const { data } = await saveBook({
-  //       variables: {
-  //         bookId,
-  //       }
-  //     });
-
-  //     Auth.login(data.login.token);
-
-  //     // const response = await saveBook(bookToSave, token);
-
-  //     // if (!response.ok) {
-  //     //   throw new Error('something went wrong!');
-  //     // }
-
-  //     // if book successfully saves to user's account, save book id to state
-  //     setSavedBookIds([...savedBookIds, bookToSave.data.bookId]);
-  //   } catch (e) {
-  //     console.error(e);
-  //   }
-  // };
 
   return (
     <>

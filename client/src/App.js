@@ -1,5 +1,3 @@
-// TODO: Create an Apollo Provider to make every request work with the Apollo Server ✅
-
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from "@apollo/client";
