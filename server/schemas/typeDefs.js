@@ -29,6 +29,7 @@ const typeDefs = gql`
     link: String
   }
 
+# since I have the input above, I don't need the type Book below, right?
   type Book {
     bookId: String!
     authors: [String!]!
