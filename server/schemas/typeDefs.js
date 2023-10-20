@@ -8,8 +8,8 @@ const typeDefs = gql`
   type Mutation {
     login(email: String!, password: String!): Auth
     addUser(username: String!, email: String!, password: String!): Auth
-    saveBook(input: BookInput): User
-    removeBook(bookId: String!): User
+    saveBook(bookData: BookInput!): User
+    removeBook(bookId: ID!): User
   }
 
   type User {
@@ -21,7 +21,7 @@ const typeDefs = gql`
   }
 
   input BookInput {
-    bookId: String!
+    bookId: ID!
     authors: [String!]!
     description: String!
     title: String
@@ -29,9 +29,8 @@ const typeDefs = gql`
     link: String
   }
 
-# since I have the input above, I don't need the type Book below, right?
   type Book {
-    bookId: String!
+    bookId: ID!
     authors: [String!]!
     description: String!
     title: String
@@ -40,7 +39,7 @@ const typeDefs = gql`
   }
 
   type Auth {
-    token: String!
+    token: ID!
     user: User
   }
 `;

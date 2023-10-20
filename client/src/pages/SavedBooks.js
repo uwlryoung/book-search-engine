@@ -15,40 +15,42 @@ import { GET_ME } from '../utils/queries'
 import { REMOVE_BOOK } from '../utils/mutations';
 
 const SavedBooks = () => {
-  const [userData, setUserData] = useState({});
+  // const [userData, setUserData] = useState({});
   const [removeBook] = useMutation(REMOVE_BOOK);
-  const [getMe] = useQuery(GET_ME);
-
+  const { data, loading, refetch } = useQuery(GET_ME);
+  console.log(data);
+  const userData = data?.me
+  console.log(userData);
   // use this to determine if `useEffect()` hook needs to run again
-  const userDataLength = Object.keys(userData).length;
+  // const userDataLength = Object.keys(userData).length;
 
   // TODO: Remove the useEffect() Hook that sets the state for UseData. Instead, use the useQuery() Hook to execute the GET_ME query on load and save it to a variable named userData. 
 
-  const getMeHandler = async () => {
-    const { data } = await getMe();
-    return data;
-  };
+  // const getMeHandler = async () => {
+  //   const { data } = await getMe();
+  //   return data;
+  // };
 
-  const GetMe = () => {
-    const { data, isLoading, error } = useQuery('myData', getMeHandler);
+  // const GetMe = () => {
+  //   const { data, isLoading, error } = useQuery('myData', getMeHandler);
   
-    if (isLoading) {
-      return <div>Loading...</div>;
-    }
+  //   if (isLoading) {
+  //     return <div>Loading...</div>;
+  //   }
   
-    if (error) {
-      return <div>Error: {error.message}</div>;
-    }
+  //   if (error) {
+  //     return <div>Error: {error.message}</div>;
+  //   }
 
-    const token = Auth.loggedIn()? Auth.getToken() : null;
+  //   const token = Auth.loggedIn()? Auth.getToken() : null;
 
-    if (!token) {
-      return false;
-    }
+  //   if (!token) {
+  //     return false;
+  //   }
     
-    setUserData(data);
-    // return <div>Data: {data}</div>;
-  };
+  //   // setUserData(data);
+  //   // return <div>Data: {data}</div>;
+  // };
 
   // useEffect(() => {
   //   const getUserData = async () => {
@@ -87,23 +89,28 @@ const SavedBooks = () => {
     }
 
     try {
-      const { data } = await removeBook(bookId, token);
+      const { data } = await removeBook({
+        variables: {
+          bookId
+        }
+      });
 
       // if (!response.ok) {
       //   throw new Error('something went wrong!');
       // }
 
       // const updatedUser = await response.json();
-      setUserData(data);
+      // setUserData(data);
       // upon success, remove book's id from localStorage
       removeBookId(bookId);
+      refetch();
     } catch (err) {
       console.error(err);
     }
   };
 
   // if data isn't here yet, say so
-  if (!userDataLength) {
+  if (loading) {
     return <h2>LOADING...</h2>;
   }
 
@@ -116,12 +123,12 @@ const SavedBooks = () => {
       </div>
       <Container>
         <h2 className='pt-5'>
-          {userData.savedBooks.length
-            ? `Viewing ${userData.savedBooks.length} saved ${userData.savedBooks.length === 1 ? 'book' : 'books'}:`
+          {userData?.savedBooks?.length
+            ? `Viewing ${userData?.savedBooks?.length} saved ${userData?.savedBooks?.length === 1 ? 'book' : 'books'}:`
             : 'You have no saved books!'}
         </h2>
         <Row>
-          {userData.savedBooks.map((book) => {
+          {userData?.savedBooks?.map((book) => {
             return (
               <Col md="4">
                 <Card key={book.bookId} border='dark'>
