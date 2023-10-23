@@ -4,6 +4,15 @@
 ## Description
 A website where users can search for books to get books' summaries, cover images, and author(s) information. Furthermore, users can save any book to their own booklist for easy access. 
 
+Homepage
+![homepage](/assets/book-home.png)
+
+Search
+![search](/assets/search.png)
+
+Saved Books
+![saved](/assets/savedBooks.png)
+
 This project was initially given as a REST API, and I converted it to use GraphQL and an Apollo Server. 
 
 ## Table of Contents 
